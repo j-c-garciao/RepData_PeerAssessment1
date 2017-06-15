@@ -1,25 +1,193 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 output: 
-  html_document:
-    keep_md: true
+html_document:
+keep_md: true
 ---
-
 
 ## Loading and preprocessing the data
 
+In order to load the data, I used the following R command, by assuming the compressed file given for the assignment has been previously uncompressed.
 
+```{r,cache=FALSE}
+data <- read.table("activity.csv", header=T, quote="\"", sep=",")
+```
+
+Subsequently, the data is cleaned up and the NA values are removed. The following command is executed.
+
+```{r,cache=FALSE}
+data<-na.omit(data)
+```
+
+Also, the data type of the variable date is changed.
+
+```{r, cache=FALSE}
+data$date=as.Date(data$date)
+```
 
 ## What is mean total number of steps taken per day?
 
+In order to address the firt question provided in the assesment, the following commands are executed
 
+```{r,cache=FALSE}
+x<-tapply(data$steps,data$date,sum)
+dates<-c(names(x))
+sum_steps<-c(as.integer(as.vector(x[])))
+new.data<-data.frame(sum_steps,dates)
+```
+
+As result, after executing the following commands, a bar chart is created illustrating the sum of steps per day.
+
+```{r,warning=F,fig.width=15}
+library("ggplot2")
+ggplot(new.data,aes(new.data$dates,new.data$sum_steps)) +     
+       geom_bar(stat="identity") +
+       theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) + 
+       xlab("Dates") + 
+       ylab("Sum of Steps")
+```
+
+In order to report the mean of the total number of steps taken per day, I proceed to execute the following instruction in r.
+
+```{r,cache=TRUE}
+r1 <- mean(new.data$sum_steps)
+r1
+```
+
+Also, the succeding command is executed in order to report the median of the total number of steps taken per day
+
+```{r,cache=TRUE}
+r2 <- median(new.data$sum_steps)
+r2
+```
 
 ## What is the average daily activity pattern?
 
+For addressing this question, first we compute the mean of steps per interval of time. To do so, we execute the following r command.
 
+```{r}
+x_interval<-tapply(data$steps,data$interval,mean)
+```
+
+Subsecuently, we extract the data required to address the problem and they are stored in a new data frame called new.data.interval; as is shown next 
+
+```{r,echo=TRUE}
+interval<-as.integer(c(names(x_interval)))
+mean_steps<-c(as.double(as.vector(x_interval[])))
+new.data.interval<-data.frame(mean_steps,interval)
+```
+
+Finally, a time series plot is drawn on.
+
+```{r,echo=TRUE,warning=FALSE,fig.width=15}
+ggplot(new.data.interval, aes(x=interval, y=mean_steps)) + 
+      geom_line() +
+      xlab("Interval") + 
+      ylab("Mean Steps") + 
+      scale_x_continuous(breaks = round(seq(0, 2400, by = 200),1))
+```
+
+Finally, we compute which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps.
+
+
+```{r,echo=TRUE}
+new.data.interval$interval[which.max(new.data.interval$mean_steps)]
+```
+
+In our case, is 8:35 in the morning with an average of steps of
+
+```{r,echo=TRUE}
+new.data.interval$mean_steps[which.max(new.data.interval$mean_steps)]
+```
 
 ## Imputing missing values
 
+In order to impute missing values, we first proceed to calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs, recall to reload the input file)
 
+```{r,echo=TRUE}
+data <- read.table("activity.csv", header=T, quote="\"", sep=",")
+sum(is.na(data))
+```
+
+Next, we devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. In our case we use the mean for that day, or the mean for that 5-minute interval, etc. In our case, we fill in all of the missing values with the mean of all mean for each 5-minute interval.
+
+```{r,echo=TRUE}
+mean(new.data.interval$mean_steps)
+```
+
+Then, we reate a new dataset that is equal to the original dataset but with the missing data filled in.
+
+
+```{r,echo=TRUE}
+altered_data <- data
+altered_data$steps[is.na(altered_data$steps)] <- mean(new.data.interval$mean_steps)
+
+```
+
+Finally, we make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. 
+
+```{r,fig.width=15}
+altered_data$date=as.Date(altered_data$date)
+x<-tapply(altered_data$steps,altered_data$date,sum)
+dates<-c(names(x))
+sum_steps<-c(as.integer(as.vector(x[])))
+new.data<-data.frame(sum_steps,dates)
+library(ggplot2)
+ggplot(new.data,aes(new.data$dates,new.data$sum_steps)) + geom_bar(stat="identity")+theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) + xlab("Dates") + ylab("Sum of Steps")
+```
+
+
+In order to report the mean of the total number of steps taken per day, I proceed to execute the following instruction in r.
+
+```{r,cache=TRUE}
+r3 <- mean(new.data$sum_steps)
+r3
+```
+
+Also, the succeding command is executed in order to report the median of the total number of steps taken per day
+
+```{r,cache=TRUE}
+r4 <- median(new.data$sum_steps)
+r4
+```
+
+Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps? The porcentual difference between both measurements is less that 1%
+
+Mean
+
+```{r}
+r5 <- (abs(r3-r1)/r1)*100
+r5
+```
+
+Median
+```{r}
+r6 <- (abs(r4-r2)/r2)*100
+r6
+
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+Finally, we evaluate differences in activity patterns between weekdays and weekends? As input we use the dataset with the filled-in missing values. Because, we are working in a latin country, we have to setup the correct locale time.
+
+```{r,echo=TRUE}
+Sys.setlocale("LC_TIME", "English")
+```
+
+
+```{r,echo=TRUE}
+head(altered_data)
+altered_data$weekday<-weekdays(altered_data$date)
+altered_data$day_type[(altered_data$weekday == "Saturday" | altered_data$weekday == "Sunday")] <- "Weekend"
+altered_data$day_type[!(altered_data$weekday == "Saturday" | altered_data$weekday == "Sunday")] <- "Weekday"
+final<-aggregate(altered_data$steps,by=list(altered_data$interval,altered_data$day_type),FUN=mean)
+head(altered_data)
+```
+
+Finally, we proceed to plot the results
+
+```{r,echo=TRUE,warning=FALSE,fig.width=15}
+library(lattice)
+xyplot(x ~ Group.1 | Group.2, data = final, type = "l", xlab = "Interval",  ylab = "Number of steps", layout = c(1, 2))
+```
