@@ -27,7 +27,7 @@ data$date=as.Date(data$date)
 
 ## What is mean total number of steps taken per day?
 
-In order to address the firt question provided in the assesment, the following commands are executed
+In order to address the first question provided in the assesment (i.e., calculate the total number of steps taken per day), the following commands are executed
 
 ```{r,cache=FALSE}
 x<-tapply(data$steps,data$date,sum)
@@ -36,7 +36,7 @@ sum_steps<-c(as.integer(as.vector(x[])))
 new.data<-data.frame(sum_steps,dates)
 ```
 
-As result, after executing the following commands, a bar chart is created illustrating the sum of steps per day.
+As result, after executing the following commands, a bar chart is created illustrating the sum of steps per every single day.
 
 ```{r,warning=F,fig.width=15}
 library("ggplot2")
@@ -69,7 +69,7 @@ For addressing this question, first we compute the mean of steps per interval of
 x_interval<-tapply(data$steps,data$interval,mean)
 ```
 
-Subsecuently, we extract the data required to address the problem and they are stored in a new data frame called new.data.interval; as is shown next 
+Subsequently, we extract the data required to address the problem. The data are stored in a new data frame called new.data.interval; as is shown next 
 
 ```{r,echo=TRUE}
 interval<-as.integer(c(names(x_interval)))
@@ -109,7 +109,7 @@ data <- read.table("activity.csv", header=T, quote="\"", sep=",")
 sum(is.na(data))
 ```
 
-Next, we devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. In our case we use the mean for that day, or the mean for that 5-minute interval, etc. In our case, we fill in all of the missing values with the mean of all mean for each 5-minute interval.
+Next, we devise a strategy for filling in all of the missing values in the dataset (the strategy does not need to be sophisticated). In our case we use the mean for that day, or the mean for that 5-minute interval, etc. In our case, we fill in all of the missing values with the mean of all mean for each 5-minute interval.
 
 ```{r,echo=TRUE}
 mean(new.data.interval$mean_steps)
@@ -117,11 +117,9 @@ mean(new.data.interval$mean_steps)
 
 Then, we reate a new dataset that is equal to the original dataset but with the missing data filled in.
 
-
 ```{r,echo=TRUE}
 altered_data <- data
 altered_data$steps[is.na(altered_data$steps)] <- mean(new.data.interval$mean_steps)
-
 ```
 
 Finally, we make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. 

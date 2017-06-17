@@ -131,12 +131,12 @@ $(document).ready(function () {
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>
-<p>In order to address the firt question provided in the assesment, the following commands are executed</p>
+<p>In order to address the first question provided in the assesment (i.e., calculate the total number of steps taken per day), the following commands are executed</p>
 <pre class="r"><code>x&lt;-tapply(data$steps,data$date,sum)
 dates&lt;-c(names(x))
 sum_steps&lt;-c(as.integer(as.vector(x[])))
 new.data&lt;-data.frame(sum_steps,dates)</code></pre>
-<p>As result, after executing the following commands, a bar chart is created illustrating the sum of steps per day.</p>
+<p>As result, after executing the following commands, a bar chart is created illustrating the sum of steps per every single day.</p>
 <pre class="r"><code>library(&quot;ggplot2&quot;)
 ggplot(new.data,aes(new.data$dates,new.data$sum_steps)) +     
        geom_bar(stat=&quot;identity&quot;) +
@@ -157,7 +157,7 @@ r2</code></pre>
 <h2>What is the average daily activity pattern?</h2>
 <p>For addressing this question, first we compute the mean of steps per interval of time. To do so, we execute the following r command.</p>
 <pre class="r"><code>x_interval&lt;-tapply(data$steps,data$interval,mean)</code></pre>
-<p>Subsecuently, we extract the data required to address the problem and they are stored in a new data frame called new.data.interval; as is shown next</p>
+<p>Subsequently, we extract the data required to address the problem. The data are stored in a new data frame called new.data.interval; as is shown next</p>
 <pre class="r"><code>interval&lt;-as.integer(c(names(x_interval)))
 mean_steps&lt;-c(as.double(as.vector(x_interval[])))
 new.data.interval&lt;-data.frame(mean_steps,interval)</code></pre>
@@ -181,7 +181,7 @@ new.data.interval&lt;-data.frame(mean_steps,interval)</code></pre>
 <pre class="r"><code>data &lt;- read.table(&quot;activity.csv&quot;, header=T, quote=&quot;\&quot;&quot;, sep=&quot;,&quot;)
 sum(is.na(data))</code></pre>
 <pre><code>## [1] 2304</code></pre>
-<p>Next, we devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. In our case we use the mean for that day, or the mean for that 5-minute interval, etc. In our case, we fill in all of the missing values with the mean of all mean for each 5-minute interval.</p>
+<p>Next, we devise a strategy for filling in all of the missing values in the dataset (the strategy does not need to be sophisticated). In our case we use the mean for that day, or the mean for that 5-minute interval, etc. In our case, we fill in all of the missing values with the mean of all mean for each 5-minute interval.</p>
 <pre class="r"><code>mean(new.data.interval$mean_steps)</code></pre>
 <pre><code>## [1] 37.3826</code></pre>
 <p>Then, we reate a new dataset that is equal to the original dataset but with the missing data filled in.</p>
