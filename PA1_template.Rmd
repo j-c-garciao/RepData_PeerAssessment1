@@ -120,6 +120,7 @@ Then, we reate a new dataset that is equal to the original dataset but with the 
 ```{r,echo=TRUE}
 altered_data <- data
 altered_data$steps[is.na(altered_data$steps)] <- mean(new.data.interval$mean_steps)
+
 ```
 
 Finally, we make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. 
