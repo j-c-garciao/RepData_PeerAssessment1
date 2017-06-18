@@ -184,7 +184,7 @@ sum(is.na(data))</code></pre>
 <p>Next, we devise a strategy for filling in all of the missing values in the dataset (the strategy does not need to be sophisticated). In our case we use the mean for that day, or the mean for that 5-minute interval, etc. In our case, we fill in all of the missing values with the mean of all mean for each 5-minute interval.</p>
 <pre class="r"><code>mean(new.data.interval$mean_steps)</code></pre>
 <pre><code>## [1] 37.3826</code></pre>
-<p>Then, we reate a new dataset that is equal to the original dataset but with the missing data filled in.</p>
+<p>Then, we create a new dataset that is equal to the original dataset but with the missing data filled in.</p>
 <pre class="r"><code>altered_data &lt;- data
 altered_data$steps[is.na(altered_data$steps)] &lt;- mean(new.data.interval$mean_steps)</code></pre>
 <p>Finally, we make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day.</p>

@@ -89,7 +89,6 @@ ggplot(new.data.interval, aes(x=interval, y=mean_steps)) +
 
 Finally, we compute which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps.
 
-
 ```{r,echo=TRUE}
 new.data.interval$interval[which.max(new.data.interval$mean_steps)]
 ```
@@ -115,7 +114,7 @@ Next, we devise a strategy for filling in all of the missing values in the datas
 mean(new.data.interval$mean_steps)
 ```
 
-Then, we reate a new dataset that is equal to the original dataset but with the missing data filled in.
+Then, we create a new dataset that is equal to the original dataset but with the missing data filled in.
 
 ```{r,echo=TRUE}
 altered_data <- data
