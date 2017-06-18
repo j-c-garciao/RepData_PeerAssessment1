@@ -7,7 +7,7 @@ keep_md: true
 
 ## Loading and preprocessing the data
 
-In order to load the data, I used the following R command, by assuming the compressed file given for the assignment has been previously uncompressed.
+In order to load the data, we used the following R command, by assuming the compressed file given for the assignment has been previously uncompressed.
 
 ```{r,cache=FALSE}
 data <- read.table("activity.csv", header=T, quote="\"", sep=",")
@@ -36,7 +36,7 @@ sum_steps<-c(as.integer(as.vector(x[])))
 new.data<-data.frame(sum_steps,dates)
 ```
 
-As result, after executing the following commands, a bar chart is created illustrating the sum of steps per every single day.
+As result, after executing the following commands, a bar chart is created illustrating the sum of steps for every single day.
 
 ```{r,warning=F,fig.width=15}
 library("ggplot2")
@@ -47,7 +47,7 @@ ggplot(new.data,aes(new.data$dates,new.data$sum_steps)) +
        ylab("Sum of Steps")
 ```
 
-In order to report the mean of the total number of steps taken per day, I proceed to execute the following instruction in r.
+In order to report the mean of the total number of steps taken per day, we proceed to execute the following instruction in R.
 
 ```{r,cache=TRUE}
 r1 <- mean(new.data$sum_steps)
@@ -63,7 +63,7 @@ r2
 
 ## What is the average daily activity pattern?
 
-For addressing this question, first we compute the mean of steps per interval of time. To do so, we execute the following r command.
+For addressing this question, first we compute the mean of steps per interval of time. To do so, we execute the following R command.
 
 ```{r}
 x_interval<-tapply(data$steps,data$interval,mean)
@@ -136,7 +136,7 @@ ggplot(new.data,aes(new.data$dates,new.data$sum_steps)) + geom_bar(stat="identit
 ```
 
 
-In order to report the mean of the total number of steps taken per day, I proceed to execute the following instruction in r.
+In order to report the mean of the total number of steps taken per day, I proceed to execute the following instruction in R.
 
 ```{r,cache=TRUE}
 r3 <- mean(new.data$sum_steps)
